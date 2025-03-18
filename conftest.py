@@ -1,4 +1,5 @@
 import pytest
+import random
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -7,6 +8,16 @@ from selenium.webdriver.chrome.service import Service
 def driver():
       # 크롬 옵션 설정
       chrome_options = Options() # 쿠팡에서 자동화툴 사용 못하게 막아서 옵션 수정 필요함
+
+      # 가능한 user-agent 목록 
+      user_agents = [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Firefox/91.0"
+            ]
+      
+      #랜덤으로 user-agent 선택
+      selected_user_agent = random.choice(user_agents)
+      chrome_options.add_argument(f"user-agent={selected_user_agent}")
 
       #proxy : 크롤링 중 ip가 차단되면 vpn을 통해서 ip 우회하는 시도
       # 1) User-Agent 변경 (사용자 접근 환경 강제 입력)
@@ -26,7 +37,7 @@ def driver():
       chrome_options.add_argument('--disable-blink-features=AutomationControlled') 
 
       # 4) 디버그 로깅 줄이기 (선택)
-      # chrome_options.add_argument('--log-level=3')
+      chrome_options.add_argument('--log-level=3')
 
       # 5) Sandbox나 DevShm 사이즈 문제 우회 (리눅스 환경에서 발생 가능)
       chrome_options.add_argument('--no-sandbox')
@@ -41,3 +52,6 @@ def driver():
       
       yield driver
       driver.quit()
+
+      driver.execute_cdp_cmd("Network.clearBrowserCache", {})
+      driver.delete_all_cookies()
