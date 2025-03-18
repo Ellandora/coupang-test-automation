@@ -74,17 +74,36 @@ class TestMainPage:
             driver.save_screenshot("메인페이지-링크텍스트-실패-타임에러.jpg")
             assert False
 
-        @pytest.mark.skip(reason="아직 테스트 케이스 작동 X")
-        def test_search_items(self, driver: WebDriver):
-            try:"
-                ITEMS_XPATH = "//form//ul/li"
-                main_page = MainPage(driver)
-                main_page.open()
+    @pytest.mark.skip(reason="아직 테스트 케이스 작동 X")
+    def test_search_items(self, driver: WebDriver):
+        try:
+            ITEMS_XPATH = "//form//ul/li"
+            main_page = MainPage(driver)
+            main_page.open()
 
-                time.sleep(2)
+            time.sleep(2)
             
-                wait = ws(driver, 10)
-                wait.until(EC.url_contains("coupang.com"))
-                assert "coupang.com" in driver.current_url
+            wait = ws(driver, 10)
+            wait.until(EC.url_contains("coupang.com"))
+            assert "coupang.com" in driver.current_url
             
-                time.sleep
+            time.sleep(2) # 봇인 것을 들키지 않기 위해 대기
+            
+            main_page.search_items("갤럭시S25")
+            
+            ws(driver, 10).until(EC.presence_of_element_located((By.XPATH, ITEMS_XPATH)))
+            
+            items = driver.find_elements(By.XPATH, ITEMS_XPATH)
+            item_name = parse.quot("갤럭시S25")
+            
+            assert len(items) > 0
+            assert item_name in driver.current_url
+            
+            driver.save_screenshot("메인페이지-검색-성공.jpg")
+        except NoSuchElementException as e:
+            driver.save_screenshot("메인페이지-검색-실패-노서치.jpg")
+        assert False
+
+        except TimeoutException as e:
+            driver.save_screenshot("메인페이지-검색-실패-타임에러.jpg")
+        assert False

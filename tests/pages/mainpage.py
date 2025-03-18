@@ -8,6 +8,7 @@ class MainPage:
     URL = "https://www.coupang.com"
     SEARCH_INPUT_ID = "headerSearchKeyword" # 검색 입력 필드의 HTML ID 값
 
+#__init__은 클래스 인스턴스가 생성될 때 필요한 데이터를 초기화 하거나 준비 작업을 수행함
     def __init__(self, driver: WebDriver): # WebDriver 객체를 받아 클래스 인스턴스의 driver로 저장
         self.driver = driver
 
