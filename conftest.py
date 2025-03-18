@@ -53,5 +53,5 @@ def driver():
       yield driver
       driver.quit()
 
-      driver.execute_cdp_cmd("Network.clearBrowserCache", {})
-      driver.delete_all_cookies()
+      # driver.execute_cdp_cmd("Network.clearBrowserCache", {})
+      # driver.delete_all_cookies()

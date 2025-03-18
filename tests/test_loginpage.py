@@ -1,6 +1,6 @@
 # test 폴더의 pages 폴더의 loginpage.py 파일을 import 한다.
 # loginpage.py 파일의 LoginPage 클래스를 사용한다.
-from tests.pages.loginpage import LoginPage 
+from tests.pages.login_page import LoginPage 
 
 class TestLoginPage:
     def test_login_url(self, driver):
